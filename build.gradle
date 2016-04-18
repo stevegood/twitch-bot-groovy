@@ -1,10 +1,21 @@
 
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+	}
+}
+
 repositories {
 	jcenter()
 }
 
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'com.jfrog.bintray'
 
 dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.4.6'
@@ -13,16 +24,29 @@ dependencies {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+version = '1.0.0-RELEASE'
+group = 'tv.extrememoderation.twitch'
 
 jar {
 	baseName = rootProject.name
-	version = '1.0.0-RELEASE'
 }
 
 eclipse {
 	classpath {
 		 containers.remove 'org.eclipse.jdt.launching.JRE_CONTAINER'
 		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+	}
+}
+
+bintray {
+	user = System.getenv('BINTRAY_USER')
+	key = System.getenv('BINTRAY_KEY')
+	configurations = ['archives']
+	pkg {
+		repo = 'maven'
+		name = 'twitch-bot-groovy'
+		licenses = ['Apache-2.0']
+		vcsUrl = 'https://github.com/stevegood/twitch-bot-groovy.git'
 	}
 }
 
